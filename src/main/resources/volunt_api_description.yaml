@@ -1,0 +1,58 @@
+openapi: 3.1.0
+info:
+  title: Volunt
+  description: |-
+    Volunteer jobs for software developers
+
+  termsOfService: TBD
+  contact:
+    email: volunt@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://localhost:8080
+  - url: http://localhost:8080
+tags:
+  - name: user
+    description: Operations about user
+paths:
+  /user/validateCredentials:
+    get:
+      tags:
+        - user
+      summary: Validates user credentials
+      description: ''
+      operationId: validateCredentials
+      parameters:
+        - name: username
+          in: query
+          description: The user name
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation, true if credentials are valid
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: boolean
