@@ -1,0 +1,13 @@
+Build Docker image using Maven: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=mlopezsoto/volunt (does NOT work on PowerShell)
+Run docker image: docker run -p 8080:8080 -e "JAVA_OPTS=-Ddebug -Xmx128m" mlopezsoto/volunt
+Stop docker: docker stop <CONTAINER ID>
+List containers: docker ps
+List images: docker images ls
+
+Push image to Docker Hub:
+- Login: docker login -u <USER-NAME>
+- Push: docker push mlopezsoto/volunt
+
+
+Using AWS CDK
+

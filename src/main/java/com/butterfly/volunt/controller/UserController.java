@@ -1,34 +1,29 @@
 package com.butterfly.volunt.controller;
 
-import com.butterfly.volunt.api.UserApi;
+import com.butterfly.volunt.service.UserService;
 import com.butterfly.volunt.model.UserValidation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
 
 @RestController
 @CrossOrigin
-public class UserController implements UserApi {
+@RequiredArgsConstructor
+public class UserController  {
 
+    private final UserService userService;
 
-    @Override
-    public ResponseEntity<Object> validateCredentials(Object username, Object password) {
+    @GetMapping("/user/validateCredentials")
+    public ResponseEntity<Object> validateCredentials(@RequestParam("username") String username, @RequestParam("password") String password) {
+            return new ResponseEntity<>(new UserValidation(userService.validateUsernamePasswordExists(username, password)), HttpStatus.OK);
+    }
 
-        if (Objects.isNull(username) || username.toString().isEmpty()) {
-            return new ResponseEntity<>(new UserValidation(false), HttpStatus.OK);
-        }
-
-        if (Objects.isNull(password) || password.toString().isEmpty()) {
-            return new ResponseEntity<>(new UserValidation(false), HttpStatus.OK);
-        }
-
-        if("invalid".equals(username)) {
-            return new ResponseEntity<>(new UserValidation(false), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(new UserValidation(true), HttpStatus.OK);
+    @GetMapping("/user/listAll")
+    public ResponseEntity<Object> listAll() {
+        return new ResponseEntity<>(userService.listAll(), HttpStatus.OK);
     }
 }
